@@ -14,13 +14,28 @@ public class Plant {
 @Size(max = 50, message = "name can not be grater than 50 characters")
     private String name;
 
-// Descriptions ska innehålla: ljusbehov, vattenbehov och svårighetsgrad
 @NotNull(message = "Description can not be null")
 @NotEmpty(message = " Description can not be empty")
 private String description;
+
+@NotNull(message = "Light requirement can not be null")
+@NotEmpty(message = " Light requirement can not be empty")
+private String lightRequirement;
+
+@NotNull(message = "Water requirement can not be null")
+@NotEmpty(message = "Water requirement can not be empty")
+private String waterRequirement;
+
+@NotNull(message = "difficulty can not be null")
+@NotEmpty(message = "Difficulty can not be empty")
+private String difficulty;
+
+@NotNull(message = "Size can not be null")
+@NotEmpty(message = "Sizw can not be empty")
 private String size;
 
 @NotNull(message = "plant type can not be null")
+@NotEmpty(message = " Plant type can not be empty")
 private String plantType;
 
 @NotNull(message = "price can not be null")
@@ -108,5 +123,29 @@ private String plantUrl;
 
     public void setPlantUrl(String plantUrl) {
         this.plantUrl = plantUrl;
+    }
+
+    public String getLightRequirement() {
+        return lightRequirement;
+    }
+
+    public void setLightRequirement(String lightRequirement) {
+        this.lightRequirement = lightRequirement;
+    }
+
+    public String getWaterRequirement() {
+        return waterRequirement;
+    }
+
+    public void setWaterRequirement(String waterRequirement) {
+        this.waterRequirement = waterRequirement;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 }
