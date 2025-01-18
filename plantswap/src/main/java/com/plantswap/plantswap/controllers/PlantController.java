@@ -39,7 +39,7 @@ public class PlantController {
         return ResponseEntity.ok(plant);
     }
 
-    @PutMapping("{id})")
+    @PutMapping("{id}")
     public ResponseEntity<Plant> updatePlant(@PathVariable String id, @RequestBody Plant plantDetails){
         Plant existingPlant = plantRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND," Plant not found"));
@@ -53,7 +53,20 @@ public class PlantController {
         existingPlant.setPrice(plantDetails.getPrice());
         existingPlant.setStatus(plantDetails.getStatus());
         existingPlant.setSize(plantDetails.getSize());
+        existingPlant.setPlantUrl(plantDetails.getPlantUrl());
+        existingPlant.setEan(plantDetails.getEan());
 
         return ResponseEntity.ok(plantRepository.save(existingPlant));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Plant> deletePlant(@PathVariable String id){
+        if (!plantRepository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found");
+        }
+
+        plantRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

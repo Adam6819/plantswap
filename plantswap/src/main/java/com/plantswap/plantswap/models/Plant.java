@@ -46,7 +46,7 @@ private String price;
 @NotNull(message = "Status can not be null")
 @NotEmpty(message = " Status ca not be empty")
 private String status;
-private String isbn;
+private String ean;
 private String plantUrl;
 
 
@@ -109,13 +109,6 @@ private String plantUrl;
         this.status = status;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
 
     public String getPlantUrl() {
         return plantUrl;
@@ -147,5 +140,13 @@ private String plantUrl;
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public String getEan() {
+        return ean;
+    }
+
+    public void setEan(String ean) {
+        this.ean = ean;
     }
 }
