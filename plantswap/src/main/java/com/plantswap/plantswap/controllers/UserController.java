@@ -43,15 +43,15 @@ private UserRepository userRepository;
 }
 
 @PutMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable @RequestBody User UserDetails){
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails){
     User existingUser = userRepository.findById(id)
             .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
 
-        existingUser.setId(UserDetails.getId());
-        existingUser.setAge(UserDetails.getAge());
-        existingUser.setFullName(UserDetails.getFullName());
+        existingUser.setId(userDetails.getId());
+        existingUser.setAge(userDetails.getAge());
+        existingUser.setFullName(userDetails.getFullName());
 
-        return ResponseEntity.ok(userRepository.save(UserDetails));
+        return ResponseEntity.ok(userRepository.save(userDetails));
 
 }
 
