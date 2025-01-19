@@ -2,6 +2,7 @@ package com.plantswap.plantswap.models;
 
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "plants")
@@ -48,6 +49,9 @@ private String price;
 private String status;
 private String ean;
 private String plantUrl;
+
+@DBRef
+private User user;
 
 
     public Plant() {
@@ -148,5 +152,13 @@ private String plantUrl;
 
     public void setEan(String ean) {
         this.ean = ean;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

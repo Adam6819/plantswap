@@ -1,7 +1,9 @@
 package com.plantswap.plantswap.controllers;
 
 import com.plantswap.plantswap.models.Plant;
+import com.plantswap.plantswap.models.User;
 import com.plantswap.plantswap.repositories.PlantRepository;
+import com.plantswap.plantswap.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,10 @@ import java.util.List;
 public class PlantController {
     @Autowired
     private PlantRepository plantRepository;
+
+    //så vi kan komma åt userRepository i våra metoder
+    @Autowired
+    private UserRepository userRepository;
 
     //HTTP post method
     @PostMapping
@@ -39,24 +45,28 @@ public class PlantController {
         return ResponseEntity.ok(plant);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Plant> updatePlant(@PathVariable String id, @RequestBody Plant plantDetails){
+    @PutMapping("/{id}")
+    public ResponseEntity<Plant> updatePlant(@PathVariable String id, @Valid @RequestBody Plant plant){
         Plant existingPlant = plantRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND," Plant not found"));
+//Innan vi uppdaterar så måste vi kolla om ID finns i databasen - Om inte inte finns så kastar vi ett fel, felhantering.
+        if (!plantRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"plant not found");
 
-        existingPlant.setName(plantDetails.getDescription());
-        existingPlant.setDescription(plantDetails.getDescription());
-        existingPlant.setDifficulty(plantDetails.getDifficulty());
-        existingPlant.setPlantType(plantDetails.getPlantType());
-        existingPlant.setLightRequirement(plantDetails.getLightRequirement());
-        existingPlant.setWaterRequirement(plantDetails.getWaterRequirement());
-        existingPlant.setPrice(plantDetails.getPrice());
-        existingPlant.setStatus(plantDetails.getStatus());
-        existingPlant.setSize(plantDetails.getSize());
-        existingPlant.setPlantUrl(plantDetails.getPlantUrl());
-        existingPlant.setEan(plantDetails.getEan());
+      //kolla om rätt plant finns i databasen
+        if (plant.getUser() !=null){
+            // kolla om rätt User finns i Repository genom ID - går först i plant sen hämtar user och baserad på den hämtar vi ID på just rätt user
+            User user = userRepository.findById(plant.getUser().getId())
+                    .orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "plant not found"));
+            plant.setUser(user);
+        }
 
-        return ResponseEntity.ok(plantRepository.save(existingPlant));
+        //Här lägger jag senare en transaction relaterad kod, (förmodlingen)
+
+        Plant updatePlant = plantRepository.save(plant);
+        return ResponseEntity.ok(updatePlant);
+
+
     }
 
     @DeleteMapping("/{id}")

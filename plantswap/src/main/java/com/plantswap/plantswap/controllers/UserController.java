@@ -33,7 +33,8 @@ private UserRepository userRepository;
 
     }
 
-@GetMapping("{id}")
+@GetMapping("/{id}")
+//@Pathvariable betyder att variabler kan ändras som tex ID.
     public ResponseEntity<User> getUserById(@PathVariable String id){
     User user = userRepository.findById(id)
             .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found"));
@@ -42,20 +43,21 @@ private UserRepository userRepository;
 
 }
 
-@PutMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails){
+@PutMapping("/{id}")
+//@Valid ska alltid vara efter @Pathvariable och före @RequestBody
+    public ResponseEntity<User> updateUser(@PathVariable String id, @Valid @RequestBody User userDetails){
     User existingUser = userRepository.findById(id)
             .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
 
-        existingUser.setId(userDetails.getId());
+        existingUser.setName(userDetails.getName());
         existingUser.setAge(userDetails.getAge());
-        existingUser.setFullName(userDetails.getFullName());
 
         return ResponseEntity.ok(userRepository.save(userDetails));
 
 }
 
-@DeleteMapping
+@DeleteMapping("/{id}")
+// här tar jag bort en user genom ID
     public ResponseEntity<User> deleteUser(@PathVariable String id){
         if (!userRepository.existsById(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found");
@@ -66,6 +68,7 @@ private UserRepository userRepository;
         return ResponseEntity.noContent().build();
 
 }
+
 
 
 

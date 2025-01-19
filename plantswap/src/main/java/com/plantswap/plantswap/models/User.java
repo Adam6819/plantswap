@@ -15,13 +15,13 @@ private String id;
 
 @NotNull(message = "Full name can not be null")
 @NotEmpty(message = "Full name can not be empty")
-private String fullName;
+private String name;
 
 @NotNull(message = "age can not be null")
 @NotEmpty(message = "Age can not be empty")
 @PositiveOrZero(message = "Age can not be negative")
 @Positive(message = "Age can not be zero")
-private int age;
+private String age;
 
 
     public User() {
@@ -35,19 +35,19 @@ private int age;
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String fullName) {
+        this.name = fullName;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 }
