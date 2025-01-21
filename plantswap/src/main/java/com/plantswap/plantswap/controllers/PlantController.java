@@ -28,7 +28,9 @@ public class PlantController {
     public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant){
         Plant savedPlant = plantRepository.save(plant);
 
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPlant);
+
     }
 
     @GetMapping
@@ -49,6 +51,17 @@ public class PlantController {
     public ResponseEntity<Plant> updatePlant(@PathVariable String id, @Valid @RequestBody Plant plant){
         Plant existingPlant = plantRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND," Plant not found"));
+        existingPlant.setName(plant.getName());
+        existingPlant.setDescription(plant.getDescription());
+        existingPlant.setPlantType(plant.getPlantType());
+        existingPlant.setEan(plant.getEan());
+        existingPlant.setPlantUrl(plant.getPlantUrl());
+        existingPlant.setPrice(plant.getPrice());
+        existingPlant.setWaterRequirement(plant.getWaterRequirement());
+        existingPlant.setLightRequirement(plant.getLightRequirement());
+        existingPlant.setDifficulty(plant.getDifficulty());
+        existingPlant.setSize(plant.getSize());
+        existingPlant.setStatus(plant.getStatus());
 //Innan vi uppdaterar så måste vi kolla om ID finns i databasen - Om inte inte finns så kastar vi ett fel, felhantering.
         if (!plantRepository.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"plant not found");
