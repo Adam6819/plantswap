@@ -15,6 +15,8 @@ public class Plant {
 @Size(max = 50, message = "name can not be grater than 50 characters")
     private String name;
 
+String isPresent;
+
 @NotNull(message = "Description can not be null")
 @NotEmpty(message = " Description can not be empty")
 private String description;
@@ -160,5 +162,13 @@ private User user;
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getIsPresent() {
+        return isPresent;
+    }
+
+    public void setIsPresent(String isPresent) {
+        this.isPresent = isPresent;
     }
 }

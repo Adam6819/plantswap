@@ -32,7 +32,7 @@ private UserRepository userRepository;
         return ResponseEntity.ok(users);
 
     }
-
+// hämta user med ID
 @GetMapping("/{id}")
 //@Pathvariable betyder att variabler kan ändras som tex ID.
     public ResponseEntity<User> getUserById(@PathVariable String id){

@@ -51,6 +51,7 @@ public class PlantController {
     public ResponseEntity<Plant> updatePlant(@PathVariable String id, @Valid @RequestBody Plant plant){
         Plant existingPlant = plantRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND," Plant not found"));
+        // När vi uppdaterar vi det som behöver ändras
         existingPlant.setName(plant.getName());
         existingPlant.setDescription(plant.getDescription());
         existingPlant.setPlantType(plant.getPlantType());
@@ -91,5 +92,7 @@ public class PlantController {
         plantRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+
 
 }
