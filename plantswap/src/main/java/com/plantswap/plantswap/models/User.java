@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
 @Id
-@DBRef
+
 private String id;
 
 @NotNull(message = "Full name can not be null")

@@ -65,12 +65,14 @@ public class TransactionsController{
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Transactions> updatefield(@PathVariable String transactionId, @RequestBody String plantId, boolean amount) {
+    public ResponseEntity<Transactions> updatefield(@PathVariable String userId, String transactionId, @RequestBody String plantId, boolean amount) {
        //här kollar vi om rätt user finns genom id
         User user = userRepository.findById(userId)
+                // om rätt user inte finns genom id så kastar vi ett fel.
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         //här kollar vi om rätt plant finns genom id
         Plant plant = plantRepository.findById(plantId)
+                // om rätt plant inte finns genom id så kastar vi ett fel
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
         // hämta även transaction och kolla att den finns
         Transactions transaction = transactionRespository.findById(transactionId)
@@ -83,6 +85,7 @@ public class TransactionsController{
 
         // du får lägga till alla setter här som vi gjorde i exemplet i skolan annars körs värdena över
         plantRepository.save(plant);
+
         // men vi sätter värdet på amount till värdet vi får i request bodyn
         transaction.setAmount(amount);
         // samma sak som ovan alla setter så du inte kör över alla värden.
