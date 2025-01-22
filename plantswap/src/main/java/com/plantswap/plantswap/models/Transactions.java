@@ -13,7 +13,7 @@ public class Transactions {
 
     @NotNull(message = "amount can not be null")
     @NotEmpty(message = "amount can not be empty")
-    String amount;
+    boolean amount;
     String payment;
 
     public Transactions() {
@@ -27,11 +27,11 @@ public class Transactions {
         this.id = id;
     }
 
-    public String getAmount() {
+    public boolean getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(boolean amount) {
         this.amount = amount;
     }
 

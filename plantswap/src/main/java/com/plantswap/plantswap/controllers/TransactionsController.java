@@ -65,18 +65,31 @@ public class TransactionsController{
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Transactions> updatefield(@PathVariable String id){
+    public ResponseEntity<Transactions> updatefield(@PathVariable String transactionId, @RequestBody String plantId, boolean amount) {
+       //här kollar vi om rätt user finns genom id
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        //här kollar vi om rätt plant finns genom id
+        Plant plant = plantRepository.findById(plantId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
+        // hämta även transaction och kolla att den finns
+        Transactions transaction = transactionRespository.findById(transactionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not found"));
 
-        // Här säger vi om plantan inte finns tillgånglig så kastar vi ett fel
-        if (!plantRepository.existsById(id) && !userRepository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "plant and user not found");
+        // om du ändrar status till boolean istället för String på Plant så kan du ha true om det är
+        // tillgänglig och false om den är såld eller bortbytt
 
-            //För att uppdatera en transaction så ska vi kolla om vi hittar rätt Id på rätt planta och rätt id på rätt user
-        }else if (plantRepository.existsById(id) && userRepository.existsById(id))
-            throw new ResponseStatusException(HttpStatus.ACCEPTED, "transaction is now accepted.");
-        //här borde jag lägga en cod för att ändra status på plantan från available till såld eller reserverad ????
-     updateTransaction(id).setAmount(updateTransaction(id).getAmount());
+        plant.setStatus(false);
 
+        // du får lägga till alla setter här som vi gjorde i exemplet i skolan annars körs värdena över
+        plantRepository.save(plant);
+        // men vi sätter värdet på amount till värdet vi får i request bodyn
+        transaction.setAmount(amount);
+        // samma sak som ovan alla setter så du inte kör över alla värden.
+        transactionRespository.save(transaction);
+        // sen får du göra en return här då såklart
+        return ResponseEntity.ok(transaction);
+    }
 
 
 
@@ -85,6 +98,6 @@ public class TransactionsController{
 
 
 
-    }
+
 
 

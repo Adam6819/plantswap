@@ -48,7 +48,7 @@ private String price;
 
 @NotNull(message = "Status can not be null")
 @NotEmpty(message = " Status ca not be empty")
-private String status;
+private boolean status;
 private String ean;
 private String plantUrl;
 
@@ -107,11 +107,11 @@ private User user;
         this.price = price;
     }
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
