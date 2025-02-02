@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/plants")
@@ -94,5 +95,20 @@ public class PlantController {
     }
 
 
+//hämta baserat på namn
+@GetMapping("/name/{name}")
+    public ResponseEntity<List<Plant>> getPlantByName(@PathVariable String name){
+
+    if (name == null || name.trim().isEmpty()){
+        throw new IllegalArgumentException("Plant can not be null or empty");
+    }
+
+    List<Plant> plant = plantRepository.findByName(name);
+    if (plant.isEmpty()){
+        throw new NoSuchElementException("no plant with this name" + name);
+    }
+
+        return new ResponseEntity<>(plant,HttpStatus.OK);
+}
 
 }

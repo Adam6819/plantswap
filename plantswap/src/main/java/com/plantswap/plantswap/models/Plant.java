@@ -1,5 +1,6 @@
 package com.plantswap.plantswap.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -44,12 +45,16 @@ private String plantType;
 @NotNull(message = "price can not be null")
 @PositiveOrZero(message = "Price can not be negative number")
 @Positive(message = "price must be grater than zero")
-private String price;
+@Min(value = 50 , message = "price can not be less than 50 ")
+@Max(value = 1000 , message = "price can not be higher than 1000")
+private Double price;
 
 @NotNull(message = "Status can not be null")
 @NotEmpty(message = " Status ca not be empty")
 private boolean status;
+
 private String ean;
+
 private String plantUrl;
 
 @DBRef
@@ -99,11 +104,11 @@ private User user;
         this.plantType = plantType;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -171,4 +176,5 @@ private User user;
     public void setIsPresent(String isPresent) {
         this.isPresent = isPresent;
     }
+
 }

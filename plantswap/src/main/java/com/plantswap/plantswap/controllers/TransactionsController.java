@@ -30,29 +30,29 @@ public class TransactionsController{
 
     @Autowired
     private PlantRepository plantRepository;
-
+// skapa en transaction
     @PostMapping
     public ResponseEntity<Transactions> createTransaction(@Valid @RequestBody Transactions transactions){
         Transactions savedTransaction = transactionRespository.save(transactions);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTransaction);
 
-
     }
+    // hämta alla transaction
     @GetMapping
     public ResponseEntity<List<Transactions>> getAllTransactions(){
         List<Transactions> transactions = transactionRespository.findAll();
         return ResponseEntity.ok(transactions);
 
     }
-
+// hämta atransaction genom id
     @GetMapping("/{id}")
     public ResponseEntity<Transactions> getTransactionById(@PathVariable String id){
         Transactions transactions = transactionRespository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Transaction not found"));
         return ResponseEntity.ok(transactions);
     }
-// ska det vara endast id här eller ska jag lägga EAN nummer här också?
+// ändra en transaction genom id
     @PutMapping("/{id}")
     public ResponseEntity<Transactions> updateTransaction(@PathVariable String id, @RequestBody Transactions transactionDeitails){
         Transactions exitingTransaction = transactionRespository.findById(id)
@@ -63,9 +63,9 @@ public class TransactionsController{
 
         return ResponseEntity.ok(transactionRespository.save(exitingTransaction));
     }
-
+// uppdatera en specifik transaction genom id
     @PatchMapping("/{id}")
-    public ResponseEntity<Transactions> updatefield(@PathVariable String userId, String transactionId, @RequestBody String plantId, boolean amount) {
+    public ResponseEntity<Transactions> updateField(@PathVariable String userId, String transactionId, @RequestBody String plantId, boolean amount) {
        //här kollar vi om rätt user finns genom id
         User user = userRepository.findById(userId)
                 // om rätt user inte finns genom id så kastar vi ett fel.
@@ -74,23 +74,22 @@ public class TransactionsController{
         Plant plant = plantRepository.findById(plantId)
                 // om rätt plant inte finns genom id så kastar vi ett fel
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
-        // hämta även transaction och kolla att den finns
+        // hämta även transaction genom id och kolla att den finns
         Transactions transaction = transactionRespository.findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not found"));
 
-        // om du ändrar status till boolean istället för String på Plant så kan du ha true om det är
-        // tillgänglig och false om den är såld eller bortbytt
+        // sätter status som boolean: true = tillgänglig. false = såld eller bytt
 
         plant.setStatus(false);
 
-        // du får lägga till alla setter här som vi gjorde i exemplet i skolan annars körs värdena över
+        // Här ska setters och getter finnas för att inte köra över data. Men jag får inte till det.
         plantRepository.save(plant);
 
         // men vi sätter värdet på amount till värdet vi får i request bodyn
         transaction.setAmount(amount);
-        // samma sak som ovan alla setter så du inte kör över alla värden.
+        // Här ska setters och getter finnas för att inte köra över data. Men jag får inte till det.
         transactionRespository.save(transaction);
-        // sen får du göra en return här då såklart
+
         return ResponseEntity.ok(transaction);
     }
 
