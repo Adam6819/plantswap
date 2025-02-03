@@ -20,10 +20,7 @@ public class PlantService {
 
         }
 
-        if (plant.getStatus() < 0) {
-            throw new IllegalArgumentException("Plant Status can not be empty");
 
-        }
 
         return plantRepository.save(plant);
     }
